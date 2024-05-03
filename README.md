@@ -2,7 +2,7 @@
 
 My Home 🏠
 
-I have been living in New York for the past 5 years and there is not other place I would call home.
+I have been living in New York for the past 5 years and there is no other place I would call home.
 
 ## Setup and Run
 
