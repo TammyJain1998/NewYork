@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New York</title>
+    <link rel="stylesheet" href="placestyle.css">
+</head>
+
+<body>
+    <main class="main debug">
+        <div class="body">
+            <div id="links">
+                <nav class="nav debug">
+                    <ul class="nav__list">
+                        <li class="nav__item"><a href="index.html" noreferrer>Home</a></li>
+                        <li class="nav__item"><a href="place.html" noreferrer>Places</a></li>
+                        <li class="nav__item"><a href="weather.html" rel="noreferrer">Weather</a></li>
+                        <div class="blankspace"></div>
+                        <li class="nav__item"><a href="subscribe.html" noreferrer>Subscribe</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class = "top">
+                <div class = "left">
+            <h1>Discover the best places in New York🗽</h1>
+            <div class="facts"> New York City comprises 5 boroughs sitting where the Hudson River meets the Atlantic Ocean. At its core is Manhattan, a densely populated borough that’s among the world’s major commercial, financial and cultural centers. Its iconic sites include skyscrapers such as the Empire State Building and sprawling Central Park. Broadway theater is staged in neon-lit Times Square.</div>
+        </div>
+            <p class="image"></p>
+            </div>
+            <div id="placesList"></div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+              
+            const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            } else {
+                entry.target.classList.remove('is-visible');
+            }
+        });
+    }, {
+        threshold: 0.5 // Trigger when 50% of the element is visible
+    });
+
+    // Setup observer for images initially
+    document.querySelectorAll('.image').forEach(image => {
+        observer.observe(image);
+    });
+
+            fetch('/list-places')
+                .then(response => response.json())
+                .then(places => {
+                    const list = document.getElementById('placesList');
+                    places.forEach(place => {
+                        const placeDiv = document.createElement('div');
+                        placeDiv.className = 'place';
+                        placeDiv.innerHTML = `
+                        <h2>${place.title}</h2>
+                        <img src="${place.imageUrl}" alt="Image of ${place.title}">
+                        <p class="data"><strong>Description:</strong> ${place.description}</p>
+                        <p><strong>Location:</strong> ${place.location}</p>
+                        <p><strong>★</strong> ${place.rating} / 5</p>
+                    `;
+                        list.appendChild(placeDiv);
+                        observer.observe(placeDiv); // Observe the new place div for scroll animation
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading places:', error);
+                    document.getElementById('placesList').innerHTML = '<p>Error loading the list of places.</p>';
+                });
+        });
+    </script>
+</body>
+
+</html>
