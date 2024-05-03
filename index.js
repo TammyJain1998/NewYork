@@ -20,7 +20,7 @@ app.use(express.static('public'));
 app.use(express.json({ limit: '1mb' }));
 app.use(cors());
 
-const port = process.env.PORT || 3002
+const port = process.env.PORT || 3000
 
 app.listen(port, () => {
     console.log(`Listening at ${port}`)
